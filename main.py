@@ -1,3 +1,26 @@
+import os
+import urllib.request
+import streamlit as st
+
+@st.cache_resource # 使用缓存，防止每次刷新页面都去检查/下载
+def download_large_files():
+    files_to_download = {
+        "extract.pyz": "https://github.com/qqinzhihao847-cell/shuiyin/releases/download/v1.0/extract.pyz",
+        "embed.pyz": https://github.com/qqinzhihao847-cell/shuiyin/releases/download/v1.0/embed.pyz" # 如果需要的话
+    }
+    
+    for filename, url in files_to_download.items():
+        if not os.path.exists(filename):
+            with st.spinner(f"首次启动，正在下载核心组件 {filename}，请稍候..."):
+                try:
+                    urllib.request.urlretrieve(url, filename)
+                except Exception as e:
+                    st.error(f"下载 {filename} 失败: {e}")
+
+# 在程序一开始调用这个函数
+download_large_files()
+
+# ... 下面继续写你原来的工作目录定义和功能代码 ...
 import zipfile
 import io
 import shutil
