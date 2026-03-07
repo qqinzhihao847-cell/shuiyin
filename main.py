@@ -2,16 +2,17 @@ import os
 import urllib.request
 import streamlit as st
 
-@st.cache_resource # 使用缓存，防止每次刷新页面都去检查/下载
+@st.cache_resource
 def download_large_files():
+    # 确保网址被完整的双引号 " " 包裹
     files_to_download = {
         "extract.pyz": "https://github.com/qqinzhihao847-cell/shuiyin/releases/download/v1.0/extract.pyz",
-        "embed.pyz": https://github.com/qqinzhihao847-cell/shuiyin/releases/download/v1.0/embed.pyz" # 如果需要的话
+        "embed.pyz": "https://github.com/qqinzhihao847-cell/shuiyin/releases/download/v1.0/embed.pyz" 
     }
     
     for filename, url in files_to_download.items():
         if not os.path.exists(filename):
-            with st.spinner(f"首次启动，正在下载核心组件 {filename}，请稍候..."):
+            with st.spinner(f"首次启动，正在下载核心组件 {filename}，请稍候... (大约需要几十秒)"):
                 try:
                     urllib.request.urlretrieve(url, filename)
                 except Exception as e:
