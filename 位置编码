@@ -1,0 +1,33 @@
+# 正弦位置编码
+
+位置编码公式，i表示维度的索引，d表示总维度。
+![正弦编码相关图](正弦编码相关图.png)
+
+```python
+import torch
+import torch.nn as nn
+import math
+
+class SinusoidalPositionEmbeddings(nn.Module):
+    def __init__(self, dim):
+        super().__init__()
+        self.dim = dim
+
+    def forward(self, time):
+        device = time.device
+        half_dim = self.dim // 2  # 一半是正弦，一半是余弦
+        
+        # 计算ln(10000)/(d/2)
+        embeddings = math.log(10000) / (half_dim - 1) 
+        
+        # 进行指数转换计算
+        embeddings = torch.exp(torch.arange(half_dim, device=device) * -embeddings) 
+        
+        # 相当于计算wt过程
+        embeddings = time[:, None] * embeddings[None, :] 
+        
+        # 将计算的到的正弦和余弦在最后一个维度拼接
+        embeddings = torch.cat((embeddings.sin(), embeddings.cos()), dim=-1) 
+        
+        return embeddings
+```
